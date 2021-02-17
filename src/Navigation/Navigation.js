@@ -1,32 +1,34 @@
-import {Component} from 'react';
+import { Component } from "react";
 
-class Navigation extends Component {
-    constructor(props){
+
+export default class Navigation extends Component {
+    constructor(props) {
         super(props);
-        this.state = {
-            currentDate: new Date(),
+        this.state = { 
+            currentDate: new Date() 
         };
-        this.prevMonth = this.prevMonth.bind(this);
+
         this.nextMonth = this.nextMonth.bind(this);
+        this.prevMonth = this.prevMonth.bind(this);
     }
 
+
     prevMonth() {
-        this.setState((state) => {
+        this.setState(() => {
             return {
-                currentDate: new Date(this.state.currentDate.getFullYear(), this.state.currentDate.getMonth(), 0),
+                currentDate: new Date(this.state.currentDate.getFullYear(), this.state.currentDate.getMonth() - 1, 1)
             }
         });
     }
 
     nextMonth() {
-        this.setState((state) => {
+        this.setState(() => {
             return {
-                currentDate: new Date(this.state.currentDate.getFullYear(), this.state.currentDate.getMonth() + 1, 1),
+                currentDate: new Date(this.state.currentDate.getFullYear(), this.state.currentDate.getMonth() + 1, 1)
             }
         });
     }
-
-    render() {
+        render() {
         return (
             <div className="calendarBar">
                 <div className="btn prev-btn" onClick={this.prevMonth}></div>
@@ -40,5 +42,3 @@ class Navigation extends Component {
     }
 
 }
-
-export default Navigation;
