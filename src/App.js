@@ -12,7 +12,8 @@ class App extends Component {
     }
   }
 
-  callBackDate(newDate){
+  callBackDate = (newDate) =>{
+    //newDate = newDate.setMonth(d.getMonth() - 1);
     this.setState({currentDate: newDate});
   }
   
