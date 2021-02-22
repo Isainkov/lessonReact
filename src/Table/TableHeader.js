@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { Utils} from '../Utils/utils';
 
-function VacationButton (props){
+const VacationButton = (props) => {
     return <button>{props.value}</button>;
 }
 

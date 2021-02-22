@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TableHeader from './TableHeader';
+import TableBody from './TableBody';
 import { Utils} from '../Utils/utils';
 
 
@@ -8,7 +9,10 @@ class Table extends Component {
     super(props);
 
     this.state = {
-      width: 33
+      width: 33,
+      // month: '',
+      // year: '',
+      // countDays: ''
     };
     this.month = Number.parseInt(this.props.currentDate.toLocaleDateString("en-US", { month: "numeric" }), 10);
     this.year = Number.parseInt(this.props.currentDate.toLocaleDateString("en-US", { year: "numeric" }), 10);
@@ -21,7 +25,7 @@ class Table extends Component {
       <React.Fragment>
         <table>
           <TableHeader currentDate = {this.props.currentDate} month={this.props.month} year={this.props.year} width = {this.state.width}></TableHeader>
-          {/* <TableBody currentDate = {this.currentDate} width = {this.state.width}></TableBody> */}
+          <TableBody currentDate = {this.props.currentDate} month={this.props.month} year={this.props.year} width = {this.state.width}></TableBody>
 
         </table>
         {/* <TableHeader month={this.props.month} year={this.props.year} countDays={countDays} /> */}

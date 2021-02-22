@@ -22,14 +22,24 @@ tr.department {
     border-left: 3px solid $fronend;
   
     &.department {
-      background: rgba(155, 153, 255, 0.1);
+      background: rgba($color: $fronend, $alpha: 0.1);
     }
-  
-    & > .paid-day {
-      background-color: $fronend;
-      border-color: $fronend;
+    & td {
+      position: relative;
+      & > .paid-day {
+        background-color: $fronend;
+        border-color: $fronend;
+        top: 1px;
+      }
+
+      & > .unpaid-day {
+        background-color: rgba($color: $fronend, $alpha: 0.2);
+        color: $fronend;
+        border-color: $fronend;
+        top: 1px;
+      }
     }
-  
+    
     .teem {
       &__percentage-absent {
         background: $fronend;
@@ -41,12 +51,24 @@ tr.department {
     border-left: 3px solid $backend;
   
     &.department {
-      background: rgba(255, 153, 153, 0.1);
+      background: rgba($color: $backend, $alpha: 0.1);
     }
-  
-    & > .paid-day {
-      background-color: $backend;
-      border-color: $backend;
+    & td {
+      position: relative;
+
+      & > .paid-day {
+        background-color: $backend;
+        border-color: $backend;
+        top: 1px;
+      }
+
+      & > .unpaid-day {
+        background-color: rgba($color: $backend, $alpha: 0.2);
+        color: $backend;
+        border-color: $backend;
+        top: 1px;
+      }
+
     }
   
     .teem {
@@ -60,13 +82,26 @@ tr.department {
     border-left: 3px solid $designers;
   
     &.department {
-      background: rgba(122, 175, 255, 0.1);
+      background: rgba($color: $designers, $alpha: 0.1);
     }
   
-    & > .paid-day {
-      background-color: $designers;
-      border-color: $designers;
-    }
+    & td {
+      position: relative;
+
+        & > .paid-day {
+          background-color: $designers;
+          border-color: $designers;
+          top: 1px;
+        }
+
+        & > .unpaid-day {
+          background-color: rgba($color: $designers, $alpha: 0.2);
+          color: $designers;
+          border-color: $designers;
+          top: 1px;
+        }
+  
+      }
   
     .teem {
       &__percentage-absent {
@@ -79,8 +114,26 @@ tr.department {
     border-left: 3px solid $managers;
   
     &.department {
-      background: rgba(255, 167, 104, 0.1);
+      background: rgba($color: $managers, $alpha: 0.1);
     }
+
+    & td {
+      position: relative;
+
+        & > .paid-day {
+          background-color: $managers;
+          border-color: $managers;
+          top: 1px;
+        }
+
+        & > .unpaid-day {
+          background-color: rgba($color: $managers, $alpha: 0.2);
+          color: $managers;
+          border-color: $managers;
+          top: 1px;
+        }
+  
+      }
   
     .teem {
       &__percentage-absent {
@@ -126,7 +179,7 @@ tr.department {
         content: "";
         width: 20px;
         display: inline-block;
-        // background-image: url(http://localhost:8080/js/../src/assets/img/groups.svg);
+        background-image: url(../images/groups.svg);
         height: 15px;
         background-size: 20px 20px;
         opacity: 0.6;
@@ -144,7 +197,7 @@ tr.department {
     }
   
     &__btn--hide {
-    //   background-image: url(../assets/img/arrowUp.svg);
+      background-image: url(../images/arrowUp.svg);
       width: 20px;
       height: 20px;
     }
@@ -188,6 +241,23 @@ tr.department {
   .paid-day {
     background-color: blueviolet;
     border-color: blueviolet;
+    height: 30px;
+    z-index: 4;
+    color: #fff;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .unpaid-day {
+    border: 1px solid #000;
+    height: 28px;
+    z-index: 4;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .paid-day-first {
@@ -197,3 +267,24 @@ tr.department {
   .paid-day-last {
     border-radius: 0 5px 5px 0;
   }
+
+  // .border-top {
+  //   position: absolute;
+  //   bottom: 0;
+  //   left: 0;
+  //   right: 0;
+  //   height: 31px;
+  //   z-index: 1;
+  //   border-top: 1px solid rgba(126, 126, 126, 0.3);
+  // }
+
+  .border-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    z-index: 1;
+    border-bottom: 1px solid rgba(126, 126, 126, 0.3);
+  }
+  
