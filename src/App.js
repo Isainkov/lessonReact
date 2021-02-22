@@ -2,16 +2,19 @@ import React, { Component } from "react";
 import "./styles/index.scss";
 import Navigation from "./Navigation/Navigation";
 import Table from "./Table/Table";
+import Modal from "./VacationModal/Modal"
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-        currentDate: new Date() 
+        currentDate: new Date(),
+        modalActive: true,
     };
 
     this.nextMonth = this.nextMonth.bind(this);
     this.prevMonth = this.prevMonth.bind(this);
+    this.setModalActive = this.setModalActive.bind(this);
 }
 
 
@@ -30,6 +33,11 @@ nextMonth() {
         }
     });
 }
+
+setModalActive(value){
+  this.setState({modalActive: value})
+}
+
   // callBackDate = (newDate) =>{
   //   //newDate = newDate.setMonth(d.getMonth() - 1);
   //   this.setState({currentDate: newDate});
@@ -38,8 +46,10 @@ nextMonth() {
   render() {
     return (
       <div className="App">
+        {console.log("Active :: ", this.state.modalActive)}
         <Navigation currentDate={this.state.currentDate} prevMonth = {this.prevMonth} nextMonth = {this.nextMonth}></Navigation>
-        <Table currentDate={this.state.currentDate}></Table>
+        <Table currentDate={this.state.currentDate} setModalActive={this.setModalActive}></Table>
+        <Modal active={this.state.modalActive} setModalActive={this.setModalActive} />
       </div>
     );
   }
