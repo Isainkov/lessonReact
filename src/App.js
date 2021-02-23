@@ -38,10 +38,6 @@ setModalActive(value){
   this.setState({modalActive: value})
 }
 
-  // callBackDate = (newDate) =>{
-  //   //newDate = newDate.setMonth(d.getMonth() - 1);
-  //   this.setState({currentDate: newDate});
-  // }
   
   render() {
     return (
