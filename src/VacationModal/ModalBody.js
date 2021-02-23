@@ -14,26 +14,15 @@ export default class ModalBody extends Component {
         <div className="modal_dates_inner">
           <div className="modal__column">
             <div className="modal__subtitle">From</div>
-            <input type="date"  className="modal__date"></input>
+            <div className="modal__date">15.06.2020</div>
           </div>
           <div className="modal__column">
             <div className="modal__subtitle">To</div>
-            <input type="date" className="modal__date"></input>
+            <div className="modal__date">18.06.2020</div>
           </div>
         </div>
-        <div className="modal__title">Team</div>
-        <select className="modal__menu" >
-          <option value="TeamName1">1 team</option>
-        </select>
-        <div className="modal__title">User</div>
-        <select className="modal__menu">
-          <option value="UserName1">1 user</option>
-        </select>
         <div className="modal__title">Vac Type</div>
-        <select className="modal__menu" >
-          <option value="Paid">Paid Day Off (PD)</option>
-          <option value="Non-paid">Non-paid Day Off (NPD)</option>
-        </select>
+        <div className="modal__menu"></div>
         <div className="modal__footer">
         <div className="modal__btn modal__btn-cancel" onClick={()=> {this.props.setModalActive(false)}}>Cancel</div>
         <div className="modal__btn modal__btn-send modal__btn-green">Send</div>
