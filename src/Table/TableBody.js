@@ -6,7 +6,12 @@ import { Utils } from '../Utils/utils';
 export default class TableBody extends Component {
     constructor(props) {
         super(props);
-        this.state = users;
+        this.state = {
+            dataTeams : users,
+        }
+
+        this.daysOff = new Array(this.state.dataTeams.teams.length)
+
     }
 
     getPaidDays(vacations) {
@@ -28,7 +33,9 @@ export default class TableBody extends Component {
         let paidDays = [];
 
         if(rowNumber) {
-            paidDays = this.getPaidDays(this.state.teams[teamNumber].members[rowNumber - 1].vacations);
+            paidDays = this.getPaidDays(this.state.dataTeams.teams[teamNumber].members[rowNumber - 1].vacations);
+        } else {
+            this.daysOff[teamNumber] = [];
         }
 
         for(let cellNumber = 0; cellNumber < this.props.width - 1; cellNumber++) {
@@ -38,33 +45,33 @@ export default class TableBody extends Component {
 
             if(cellNumber === this.props.width - 2) {
                 className += "cell-sum ";
-                cells.push(<td className = {className}>
+                cells.push(<td className = {className} key = {`team${teamNumber}-lastCell`}>
                     {(!rowNumber) && <div className = "border-top border-bottom"></div>}
-                    {(rowNumber === this.state.teams[teamNumber].members.length) && <div className = "border-bottom"></div>}
-                    {this.addPaidDays(cellNumber, paidDays)}
+                    {(rowNumber === this.state.dataTeams.teams[teamNumber].members.length) && <div className = "border-bottom"></div>}
+                    {(rowNumber) ? (this.daysOff[teamNumber][rowNumber]) ? this.daysOff[teamNumber][rowNumber] : "0" : "" }
                     </td>);
             }
             if (Utils.hiddenDays(cellNumber + 1, this.countDays, this.props.width)) {
                 className += "hidden "
-                cells.push(<td className = {className}>
+                cells.push(<td className = {className} key = {`team${teamNumber}-cell${cellNumber}`}>
                     {(!rowNumber) && <div className = "border-top border-bottom"></div>}
-                    {(rowNumber === this.state.teams[teamNumber].members.length) && <div className = "border-bottom"></div>}
-                    {this.addPaidDays(cellNumber, paidDays)}
+                    {(rowNumber === this.state.dataTeams.teams[teamNumber].members.length) && <div className = "border-bottom"></div>}
+                    {this.addPaidDays(cellNumber, paidDays, rowNumber, teamNumber)}
                     </td>);
             } else {
                 const weekdayName = date.toLocaleDateString("en-US", { weekday: "short" });
                 if (Utils.isWeekend(weekdayName)) {
                     className+= "weekend "
-                    cells.push(<td className = {className}>
+                    cells.push(<td className = {className} key = {`team${teamNumber}-cell${cellNumber}`}>
                         {(!rowNumber) && <div className = "border-top border-bottom"></div>}
-                        {(rowNumber === this.state.teams[teamNumber].members.length) && <div className = "border-bottom"></div>}
-                        {this.addPaidDays(cellNumber, paidDays)}
+                        {(rowNumber === this.state.dataTeams.teams[teamNumber].members.length) && <div className = "border-bottom"></div>}
+                        {this.addPaidDays(cellNumber, paidDays, rowNumber, teamNumber)}
                         </td>);               
                 } else {
-                    cells.push(<td className = {className}>
+                    cells.push(<td className = {className} key = {`team${teamNumber}-cell${cellNumber}`}>
                         {(!rowNumber) && <div className = "border-top border-bottom"></div>}
-                        {( rowNumber === this.state.teams[teamNumber].members.length) && <div className = "border-bottom"></div>}
-                        {this.addPaidDays(cellNumber, paidDays)}
+                        {( rowNumber === this.state.dataTeams.teams[teamNumber].members.length) && <div className = "border-bottom"></div>}
+                        {this.addPaidDays(cellNumber, paidDays, rowNumber, teamNumber)}
                         </td>); 
                 }
             }
@@ -73,7 +80,7 @@ export default class TableBody extends Component {
         return cells;
     }
 
-    addPaidDays(cellNumber, paidDays) {
+    addPaidDays(cellNumber, paidDays, rowNumber, teamNumber) {
 
         let element = "";
         
@@ -83,8 +90,10 @@ export default class TableBody extends Component {
 
                     const vacation = day.endDay + 1 - day.startDay; 
                     
+                    this.daysOff[teamNumber][rowNumber] = vacation;
+
                     element = <div className = {day.type === "Paid" ? "paid-day" : "unpaid-day"} style = {{
-                            width: `${vacation * 27 + vacation - 2}px`,
+                            width: `${vacation * 35 + vacation - 2}px`,
                             position: 'absolute'
                         }}>Pd</div>
                     
@@ -97,16 +106,16 @@ export default class TableBody extends Component {
 
     createTeamInformation(teamNumber) {
         return (
-            <td className = "cell team">
+            <td className = "cell team" key = {`team${teamNumber}-cell0`}>
                 <div className = "border-top border-bottom"></div>
                 <div className = "team__info">
                     <span className = "team__name">
-                        {this.state.teams[teamNumber].name}
+                        {this.state.dataTeams.teams[teamNumber].name}
                     </span>
                     <span className = "team__count-members">
-                    {this.state.teams[teamNumber].members.length}
+                    {this.state.dataTeams.teams[teamNumber].members.length}
                     </span>
-                    <span className = "team__percentage-absent">{this.state.teams[teamNumber].percentageOfAbsent[this.month]}%</span>
+                    <span className = "team__percentage-absent">{this.state.dataTeams.teams[teamNumber].percentageOfAbsent[this.month]}%</span>
                     <span className = "team__btn--hide" onClick = {(event) => this.hideMembers(event, teamNumber)}></span>
                 </div>
             </td>
@@ -115,7 +124,7 @@ export default class TableBody extends Component {
 
     hideMembers (event, teamNumber) {
         const hideButton = event.target;
-        const className = this.state.teams[teamNumber].name.split(" ").join("-");
+        const className = this.state.dataTeams.teams[teamNumber].name.split(" ").join("-");
                             
         const hiddenBlock = hideButton.closest("tr");
         if (hiddenBlock.classList.contains("close")) {
@@ -148,29 +157,29 @@ export default class TableBody extends Component {
         this.countDays = Utils.getDaysInMonth(this.month, this.year);
         const rows = [];
 
-        for(let teamNumber = 0; teamNumber < this.state.teams.length; teamNumber++ ) {
-            for(let rowNumber = 0; rowNumber < this.state.teams[teamNumber].members.length + 1; rowNumber++ ) {
+        for(let teamNumber = 0; teamNumber < this.state.dataTeams.teams.length; teamNumber++ ) {
+            for(let rowNumber = 0; rowNumber < this.state.dataTeams.teams[teamNumber].members.length + 1; rowNumber++ ) {
                if(!rowNumber) {
                     let className = "department ";
-                    className += this.state.teams[teamNumber].name.split(" ").join("-");
-                    rows.push(<tr className = {className}>
+                    className += this.state.dataTeams.teams[teamNumber].name.split(" ").join("-");
+                    rows.push(<tr className = {className} key = {`row${rowNumber}-team${teamNumber}`}>
                         {this.createTeamInformation(teamNumber)}
                         {this.renderCells(rowNumber, teamNumber)}
                     </tr>)
-               } else if(rowNumber === this.state.teams[teamNumber].members.length) { 
+               } else if(rowNumber === this.state.dataTeams.teams[teamNumber].members.length) { 
                 let className = "last-row ";
-                className += this.state.teams[teamNumber].name.split(" ").join("-");
-                rows.push(<tr className = {className}>
-                    <td className = "cell team">
-                        {this.state.teams[teamNumber].members[rowNumber - 1].name}
+                className += this.state.dataTeams.teams[teamNumber].name.split(" ").join("-");
+                rows.push(<tr className = {className} key = {`row${rowNumber}-team${teamNumber}`}>
+                    <td className = "cell team" key = {`team${teamNumber}-cell0`}>
+                        {this.state.dataTeams.teams[teamNumber].members[rowNumber - 1].name}
                         {(!rowNumber) && <div className = "border-top"></div>}
-                        {(rowNumber === this.state.teams[teamNumber].members.length) && <div className = "border-bottom"></div>}
+                        {(rowNumber === this.state.dataTeams.teams[teamNumber].members.length) && <div className = "border-bottom"></div>}
                         </td>
                     {this.renderCells(rowNumber, teamNumber)}
                 </tr>)
                } else {
-                rows.push(<tr className = {this.state.teams[teamNumber].name.split(" ").join("-")}>
-                    <td className = "cell team">{this.state.teams[teamNumber].members[rowNumber - 1].name}</td>
+                rows.push(<tr className = {this.state.dataTeams.teams[teamNumber].name.split(" ").join("-")} key = {`row${rowNumber}-team${teamNumber}`}>
+                    <td className = "cell team" key = {`team${teamNumber}-cell0`}>{this.state.dataTeams.teams[teamNumber].members[rowNumber - 1].name}</td>
                     {this.renderCells(rowNumber, teamNumber)}
                 </tr>)
                }
