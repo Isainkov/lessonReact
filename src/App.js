@@ -38,7 +38,6 @@ setModalActive(value){
   this.setState({modalActive: value})
 }
 
-  
   render() {
     return (
       <div className="App">
