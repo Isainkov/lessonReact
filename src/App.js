@@ -41,8 +41,8 @@ setModalActive(value){
     return (
       <div className="App">
         <Navigation currentDate={this.state.currentDate} prevMonth = {this.prevMonth} nextMonth = {this.nextMonth}></Navigation>
-        <Table currentDate={this.state.currentDate}></Table>
-        <Modal active={this.state.modalActive} setModalActive={this.setModalActive} />
+        <Table currentDate={this.state.currentDate} setModalActive={this.setModalActive}></Table>
+         <Modal active={this.state.modalActive} setModalActive={this.setModalActive} />
       </div>
     );
   }
