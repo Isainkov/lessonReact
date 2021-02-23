@@ -24,7 +24,7 @@ class Table extends Component {
     return (
       <React.Fragment>
         <table>
-          <TableHeader currentDate = {this.props.currentDate} month={this.props.month} year={this.props.year} width = {this.state.width}></TableHeader>
+          <TableHeader currentDate = {this.props.currentDate} month={this.props.month} year={this.props.year} width = {this.state.width} setModalActive={this.props.setModalActive}></TableHeader>
           <TableBody currentDate = {this.props.currentDate} month={this.props.month} year={this.props.year} width = {this.state.width}></TableBody>
 
         </table>

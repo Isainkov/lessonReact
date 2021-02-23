@@ -9,7 +9,7 @@ class App extends Component {
     super(props);
     this.state = { 
         currentDate: new Date(),
-        modalActive: true
+        modalActive: true,
     };
 
     this.nextMonth = this.nextMonth.bind(this);
@@ -36,12 +36,14 @@ nextMonth() {
 
 setModalActive(value){
   this.setState({modalActive: value})
-}  
+}
+
   render() {
     return (
       <div className="App">
+        {console.log("Active :: ", this.state.modalActive)}
         <Navigation currentDate={this.state.currentDate} prevMonth = {this.prevMonth} nextMonth = {this.nextMonth}></Navigation>
-        <Table currentDate={this.state.currentDate}></Table>
+        <Table currentDate={this.state.currentDate} setModalActive={this.setModalActive}></Table>
         <Modal active={this.state.modalActive} setModalActive={this.setModalActive} />
       </div>
     );

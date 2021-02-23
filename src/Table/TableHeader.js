@@ -2,13 +2,16 @@ import { Component } from "react";
 import { Utils} from '../Utils/utils';
 
 const VacationButton = (props) => {
-    return <button>{props.value}</button>;
+
+    return <button onClick={()=>{props.setModalActive(true)}}>{props.value}</button>;
+
 }
 
 class TableHeader extends Component {
     constructor(props){
         super(props);
-        // this.cells = [];
+        this.state={}
+
     }
 
     render(){
@@ -20,7 +23,8 @@ class TableHeader extends Component {
             if(!cellNumber) {
                 cells.push(<th className = "cell cell-button" 
                     key = {cellNumber}>
-                    <VacationButton value = "&#10011;Add Vacation"/>
+                    <VacationButton value = "&#10011; Add Vacation" setModalActive={this.props.setModalActive}/>
+
                     </th>);
             } else if(cellNumber === this.props.width - 1) {
                 cells.push(<th className = "cell cell-sum" key = {cellNumber}>Sum</th>)
