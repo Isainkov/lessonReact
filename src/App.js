@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import {Component, React} from 'react';
 import "./styles/index.scss";
 import Navigation from "./Navigation/Navigation";
 import Table from "./Table/Table";
@@ -12,21 +12,17 @@ class App extends Component {
     this.state = { 
         currentDate: new Date(),
         modalActive: false,
-        width: 31,
+        width: 33,
         teams: null
     };
 
     this.nextMonth = this.nextMonth.bind(this);
     this.prevMonth = this.prevMonth.bind(this);
     this.setModalActive = this.setModalActive.bind(this);
-    this.calendarFetchHandler = this.calendarFetchHandler.bind(this);
+    this.fetchCalendar = this.fetchCalendar.bind(this);
 }
 
-componentDidMount() {
-  this.calendarFetchHandler();
-}
-
-calendarFetchHandler = () => {
+fetchCalendar() {
   const departmentTeams = {
     teams: [
       {
@@ -36,31 +32,15 @@ calendarFetchHandler = () => {
           {
             name: "FE_Team_User1",
             vacations: [
-              {
-                startDate: "20.12.2020",
-                endDate: "22.12.2020",
-                type: "Paid",
-              },
-              {
-                startDate: "20.11.2020",
-                endDate: "22.11.2020",
-                type: "Paid",
-              },
+              {startDate: "20.02.2021", endDate: "25.02.2021", type: "Paid"},
+              {startDate: "20.11.2020", endDate: "22.11.2020", type: "Paid"},
             ],
           },
           {
-            name: "FE_Team_User1",
+            name: "FE_Team_User2",
             vacations: [
-              {
-                startDate: "20.02.2020",
-                endDate: "22.02.2020",
-                type: "UnPaid",
-              },
-              {
-                startDate: "10.03.2020",
-                endDate: "16.03.2020",
-                type: "UnPaid",
-              },
+              {startDate: "20.02.2020", endDate: "22.02.2020", type: "UnPaid"},
+              {startDate: "20.03.2020", endDate: "22.03.2020", type: "UnPaid"},
             ],
           },
         ],
@@ -70,69 +50,17 @@ calendarFetchHandler = () => {
         percentageOfAbsent: [0, 2, 0, 0, 1, 2, 2, 2, 2, 2, 1, 1],
         members: [
           {
-            name: "FE_Team_User1",
+            name: "BE_Team_User1",
             vacations: [
-              {
-                startDate: "15.02.2020",
-                endDate: "22.02.2020",
-                type: "UnPaid",
-              },
-              {
-                startDate: "20.03.2020",
-                endDate: "22.03.2020",
-                type: "UnPaid",
-              },
+              {startDate: "15.02.2020", endDate: "22.02.2020", type: "UnPaid"},
+              {startDate: "20.03.2020", endDate: "22.03.2020", type: "UnPaid"},
             ],
           },
           {
-            name: "FE_Team_User1",
+            name: "BE_Team_User2",
             vacations: [
-              {
-                startDate: "20.02.2020",
-                endDate: "22.02.2020",
-                type: "UnPaid",
-              },
-              {
-                startDate: "02.04.2020",
-                endDate: "12.04.2020",
-                type: "UnPaid",
-              },
-            ],
-          },
-        ],
-      },
-      {
-        name: "Designers",
-        percentageOfAbsent: [0, 2, 0, 0, 1, 2, 2, 2, 2, 2, 1, 1],
-        members: [
-          {
-            name: "FE_Team_User1",
-            vacations: [
-              {
-                startDate: "10.02.2020",
-                endDate: "15.02.2020",
-                type: "UnPaid",
-              },
-              {
-                startDate: "20.03.2020",
-                endDate: "22.03.2020",
-                type: "UnPaid",
-              },
-            ],
-          },
-          {
-            name: "FE_Team_User1",
-            vacations: [
-              {
-                startDate: "01.02.2020",
-                endDate: "06.02.2020",
-                type: "UnPaid",
-              },
-              {
-                startDate: "20.03.2020",
-                endDate: "22.03.2020",
-                type: "UnPaid",
-              },
+              {startDate: "20.02.2021", endDate: "22.02.2021", type: "Paid"},
+              {startDate: "20.03.2020", endDate: "22.03.2020", type: "UnPaid"},
             ],
           },
         ],
@@ -140,29 +68,35 @@ calendarFetchHandler = () => {
     ],
   };
   return fetch("https://jsonplaceholder.typicode.com/posts/1", {
-      method: "PUT",
-      body: JSON.stringify(departmentTeams),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({teams: json.teams});
-      }).catch(err => console.log(err));
+    method: "PUT",
+    body: JSON.stringify(departmentTeams),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      this.setState({teams: json.teams});
+    }).catch(err => console.log(err));
 }
 
+componentDidMount() {
+  this.fetchCalendar();
+}
 
 prevMonth = () => {
     this.setState({
             currentDate: new Date(this.state.currentDate.getFullYear(), this.state.currentDate.getMonth() - 1, 1)
     });
+    this.getDaysOfActivePeriod();
 }
 
 nextMonth = () => {
     this.setState({
             currentDate: new Date(this.state.currentDate.getFullYear(), this.state.currentDate.getMonth() + 1, 1)
     });
+    this.getDaysOfActivePeriod();
+
 }
 
 setModalActive = (value) => {
@@ -209,7 +143,12 @@ getDaysOfActivePeriod() {
     return (
       <div className="App">
         <Navigation currentDate={this.state.currentDate} prevMonth = {this.prevMonth} nextMonth = {this.nextMonth}></Navigation>
-        <Table allDays={this.getDaysOfActivePeriod()} currentDate={this.state.currentDate} teams={this.state.teams} setModalActive={this.setModalActive} width={this.state.width}></Table>
+        {this.state.teams
+        ? <Table allDays={this.getDaysOfActivePeriod()} teams={this.state.teams} currentDate={this.state.currentDate}
+        setModalActive={this.setModalActive}
+        />
+        : ''
+      }
          <Modal active={this.state.modalActive} setModalActive={this.setModalActive} />
       </div>
     );

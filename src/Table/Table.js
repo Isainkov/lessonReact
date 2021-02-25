@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import TableHeader from './TableHeader';
-import TableBody from './TableBody';
+import {TableBody} from './TableBody';
 import { Utils} from '../Utils/utils';
+import PropTypes from "prop-types";
 
 
 // class Table extends Component {
@@ -36,17 +37,25 @@ import { Utils} from '../Utils/utils';
 // }
 
 const Table = ({allDays, currentDate, teams, setModalActive, width}) => {
-  return(
-      <table>
+  console.log('Table' + teams)
+  return <table>
         <thead>
           <TableHeader allDays={allDays} currentDate = {currentDate} teams={teams} setModalActive={setModalActive} width = {width} ></TableHeader>
         </thead>
         <tbody>
-          <TableBody allDays={allDays} currentDate = {currentDate} teams={teams} setModalActive={setModalActive} width = {width}></TableBody>
+          <TableBody allDays={allDays} currentDate = {currentDate} teams={teams} width = {width}></TableBody>
         </tbody>
       </table>
 
-  )
+  
 }
 
 export default Table;
+
+Table.propTypes = {
+  allDays: PropTypes.arrayOf(PropTypes.object),
+  teams: PropTypes.arrayOf(PropTypes.object),
+  currentDate: PropTypes.object,
+  width: PropTypes.number,
+  // setModalActive: PropTypes.bool
+}

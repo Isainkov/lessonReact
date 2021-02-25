@@ -273,3 +273,11 @@ tr.close.department {
   justify-content: center;
 }
 
+.Paid{
+  &.Frontend-Team{
+    background-color: $frontend;
+  }
+  &.Backend-Team{
+    background-color: $backend;
+  }
+}
