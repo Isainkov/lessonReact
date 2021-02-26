@@ -219,22 +219,12 @@ tr {
   }
 }
 
-.border-top {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 31px;
-  z-index: 1;
-  border-top: 1px solid rgba(126, 126, 126, 0.3);
-}
-
 .border-bottom {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 30px;
+  height: 35px;
   z-index: 1;
   border-bottom: 1px solid rgba(126, 126, 126, 0.3);
 }
@@ -272,4 +262,3 @@ tr.close.department {
   align-items: center;
   justify-content: center;
 }
-
