@@ -1,65 +1,20 @@
-import { Component } from "react";
 import { Utils} from '../Utils/utils';
+import PropTypes from "prop-types";
+
 
 const VacationButton = (props) => {
     return <button onClick={()=>{props.setModalActive(true)}}>{props.value}</button>;
 }
 
-// class TableHeader extends Component {
-//     constructor(props){
-//         super(props);
-//         this.state={}
-//     }
-
-//     render(){
-//         this.month = Number.parseInt(this.props.currentDate.toLocaleDateString("en-US", { month: "numeric" }), 10);
-//         this.year = Number.parseInt(this.props.currentDate.toLocaleDateString("en-US", { year: "numeric" }), 10);
-//         this.countDays = Utils.getDaysInMonth(this.month, this.year);
-//         const cells = [];
-//         for(let cellNumber = 0; cellNumber < this.props.width; cellNumber++) {    
-//             if(!cellNumber) {
-//                 cells.push(<th className = "cell cell-button" 
-//                     key = {cellNumber}>
-//                     <VacationButton value = "&#10011;Add Vacation" setModalActive={this.props.setModalActive}/>
-//                     </th>);
-//             } else if(cellNumber === this.props.width - 1) {
-//                 cells.push(<th className = "cell cell-sum" key = {cellNumber}>Sum</th>)
-//             } else {
-//                 const date = new Date(this.year, this.month - 1, cellNumber);
-//                 const weekdayName = date.toLocaleDateString("en-US", { weekday: "short" });
-//                 if (Utils.hiddenDays(cellNumber, this.countDays, this.props.width)) {
-//                     cells.push(<th className = "cell cell-day hidden" key = {cellNumber}> 
-//                         <span className="day">{weekdayName}</span>
-//                         <span className = "date">{cellNumber}</span> 
-//                         </th>);
-//                 } else {
-//                     if (Utils.isWeekend(weekdayName)) {
-//                         cells.push(<th className = "cell cell-day weekend" key = {cellNumber}> 
-//                         <span className="day">{weekdayName}</span>
-//                         <span className = "date">{cellNumber}</span> 
-//                         </th>);
-//                     } else {
-//                         cells.push(<th className = "cell cell-day" key = {cellNumber}> 
-//                         <span className="day">{weekdayName}</span>
-//                         <span className = "date">{cellNumber}</span> 
-//                         </th>);
-//                     }
-//                 }
-//             }
-//         }
-//         return cells;
-//     }
-// }
-
-const TableHeader = ({allDays, currentDate, teams, setModalActive, width}) => {
+const TableHeader = ({days, currentDate, teams, setModalActive, width}) => {
     return(
         <tr>
             <th className = "cell cell-button">
                 <VacationButton value = "&#10011;Add Vacation" setModalActive={setModalActive}/>
             </th>
-            {allDays.map((day,i) => {
+            {days.map((day,i) => {
                 return(
-                    <th key = {i} className={Utils.hiddenDays(day, allDays, width) ? 'cell cell-day hidden' : (Utils.isWeekend(day.dayName) ? "cell cell-day weekend" : "cell cell-day")}> 
+                    <th key = {i} className={Utils.hiddenDays(day, days, width) ? 'cell cell-day hidden' : (Utils.isWeekend(day.dayName) ? "cell cell-day weekend" : "cell cell-day")}> 
                         <span className="day">{day.dayName}</span>
                         <span className = "date">{day.date}</span> 
                         </th>
@@ -73,3 +28,9 @@ const TableHeader = ({allDays, currentDate, teams, setModalActive, width}) => {
 }
 
 export default TableHeader;
+
+TableHeader.propTypes = {
+    days: PropTypes.arrayOf(PropTypes.object),
+    teams: PropTypes.arrayOf(PropTypes.object),
+    width: PropTypes.number,
+}
