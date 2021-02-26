@@ -1,11 +1,15 @@
 import {React, useState} from "react";
 import PropTypes from "prop-types";
 import {Utils} from '../Utils/utils';
-import isVacation from '../Utils/utils'
+import isVacation from '../Utils/utils';
+
 
 
 export const Section = ({section, currentDate, days, width}) => {
     const [isMembersShown, setIsMembersShown] = useState(true);
+
+    const [count, setCount] = useState(0);
+
 
     const toggleHandler = () => {
         setIsMembersShown((previous)=> !previous);
@@ -25,7 +29,7 @@ export const Section = ({section, currentDate, days, width}) => {
                     </div>
                 </td>
                 {days.map((day, i) => {
-                        return <td key={i} className={Utils.hiddenDays(day, days, width) ? 'cell cell-day hidden' : (Utils.isWeekend(day.dayName) ? "cell cell-day weekend" : "cell cell-day")}>
+                        return <td key={i} className={Utils.hiddenDays(day, days, width) ? 'cell cell-day hidden' : "cell cell-day"}>
                         </td>
                         
                     }
@@ -44,11 +48,14 @@ export const Section = ({section, currentDate, days, width}) => {
                     {days.map((day,i) => {
                 return(
                     <td key = {i} className={`${Utils.hiddenDays(day, days, width) ? 'cell cell-day hidden' : (Utils.isWeekend(day.dayName) ? "cell cell-day weekend" : "cell cell-day")}`}> 
-                        { isVacation(member.vacations, day.fullDate, day)}
+                        { isVacation(member.vacations, day.fullDate) }
+                        {/* {isVacation(member.vacations, day.fullDate) ? setCount(count + 1) : setCount(count)} */}
                     </td>
                 )
             })}
-            <td className = "cell cell-sum" />
+            <td className = "cell cell-sum">
+                {count}
+            </td>
 
                 </tr>
             }))}
